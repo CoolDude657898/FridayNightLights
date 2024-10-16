@@ -1,0 +1,70 @@
+Kick Input Handling Script Documentation
+========================================
+
+This script handles user input for the football kicking mechanic. It processes the initiation of the kick, 
+power and accuracy selection, and angle adjustment through player input.
+
+Dependencies and Services:
+--------------------------
+- replicatedStorage: Accesses the ReplicatedStorage service to communicate with the server.
+- userInputService: Handles all user inputs, such as mouse clicks and keyboard presses.
+- players: Fetches the Players service to interact with the local player.
+- runService: Manages connections to the RenderStepped event for frame-by-frame updates.
+
+Key Variables:
+--------------
+- remotes: References the Remotes folder in ReplicatedStorage for communication between the client and server.
+- player: Stores the local player object.
+- isKicker: Boolean variable to track whether the player is currently kicking or not.
+- angleKickUpConnection: Connection to the RenderStepped event for increasing the kick angle.
+- angleKickDownConnection: Connection to the RenderStepped event for decreasing the kick angle.
+- kickSetup: Holds the configuration details for the current kick, passed in from the server.
+- kickModuleClient: Loads the KickModuleClient, which handles the main kick logic (power, accuracy, angle).
+
+Events and Input Handling:
+--------------------------
+
+1. remotes.SteppedOnPad.OnClientEvent
+   ---------------------------------------------------------
+   - Triggered when the player steps on a pad. The event checks if the type is "Kick".
+   - If it is a kick type, it sets the player as the kicker by setting isKicker to true.
+   - It also stores the kickSetup argument, which contains the kick configuration.
+   - Calls StartKicking from kickModuleClient to begin the kicking process.
+
+2. userInputService.InputBegan
+   ---------------------------------------------------------
+   - Handles when a user starts pressing an input, such as mouse buttons or keyboard keys.
+
+   - Mouse Button:
+     - If the left mouse button is pressed (MouseButton1) and isKicker is true:
+       - Calls DetermineSelection from kickModuleClient to check if the player is selecting power or accuracy.
+       - Based on the current selection:
+         - If it is "Power", it calls SelectPower from kickModuleClient.
+         - If it is "Accuracy", it calls SelectAccuracy from kickModuleClient, passing kickSetup.
+
+   - Key Code R:
+     - If the R key is pressed and isKicker is true:
+       - Connects to the runService.RenderStepped event, calling AdjustAngleUp from kickModuleClient to increase the angle gradually.
+
+   - Key Code F:
+     - If the F key is pressed and isKicker is true:
+       - Connects to the runService.RenderStepped event, calling AdjustAngleDown from kickModuleClient to decrease the angle gradually.
+
+3. userInputService.InputEnded
+   ---------------------------------------------------------
+   - Handles when the user releases an input.
+
+   - Key Code R:
+     - If the R key is released and the angleKickUpConnection exists:
+       - Disconnects the connection to RenderStepped, stopping angle increase.
+
+   - Key Code F:
+     - If the F key is released and the angleKickDownConnection exists:
+       - Disconnects the connection to RenderStepped, stopping angle decrease.
+
+How It Works:
+-------------
+1. The player steps on a kick pad, triggering the SteppedOnPad event, which starts the kicking process if the pad type is "Kick".
+2. While the player is kicking, pressing the left mouse button selects power or accuracy depending on the current selection.
+3. The player can press R to increase the kick angle or press F to decrease it. These actions are performed frame-by-frame until the keys are released.
+4. Once the key is released, the connection to the RenderStepped event is disconnected, stopping the angle adjustment.
