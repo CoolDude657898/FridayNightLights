@@ -1,29 +1,3 @@
-KickModuleClient Documentation
-================================
-
-This module handles the client-side logic for a football kicking mechanic. It manages the GUI, power, accuracy, 
-and angle controls for the kick, as well as camera transitions during the kick process.
-
-Dependencies and Services:
---------------------------
-- players: Fetches the Players service to interact with the local player.
-- tweenService: Manages GUI animations, specifically the kick meter.
-- `replicatedStorage`: Handles communication between the client and server via remotes.
-- `kickGui`: References the GUI elements for the kick, specifically `KickGui` for the kick meter and controls.
-- `playerControls`: Provides control over the player's movements, enabling and disabling controls during kicking.
-- `currentCamera`: Controls the camera view during the kick.
-
-Key Variables:
---------------
-- `power`: Stores the power level of the kick based on player input.
-- `accuracy`: Stores the accuracy value selected by the player.
-- `verticalAngle`: Represents the vertical angle of the kick (15° to 55° range).
-- `kickMeterForwardTween`: Tween animation for the kick meter's selector moving forward.
-- `kickMeterBackwardTween`: Tween animation for the kick meter's selector moving backward.
-
-Functions:
-----------
-
 Kick Module Client Documentation
 ================================
 
