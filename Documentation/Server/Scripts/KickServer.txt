@@ -1,0 +1,37 @@
+KickServer Documentation
+=========================================
+
+This script handles the server-side logic for a football kicking mechanic. It listens for the kick event 
+fired from the client and processes the kick through the KickModuleServer.
+
+Dependencies and Services:
+--------------------------
+- replicatedStorage: Accesses the ReplicatedStorage service to communicate between the server and client.
+- remotes: References the Remotes folder in ReplicatedStorage, which contains the Kick event used for server communication.
+- kickModuleServer: Loads the KickModuleServer, which handles the main server-side logic for executing the kick.
+
+Events and Input Handling:
+--------------------------
+
+1. remotes.Kick.OnServerEvent
+   ---------------------------------------------------------
+   - Listens for the Kick event sent from the client. The client fires this event when the player finalizes their kick.
+   - Parameters:
+     - player: The player object who initiated the kick.
+     - power: The power value selected by the player.
+     - verticalAngle: The vertical angle at which the player kicked the ball.
+     - accuracy: The accuracy value selected by the player.
+     - kickSetup: A configuration object for the kick, passed from the client.
+
+   - Calls the Kick function from kickModuleServer, passing the following:
+     - power: The selected power for the kick.
+     - verticalAngle: The selected vertical angle.
+     - accuracy: The selected accuracy.
+     - kickSetup: The configuration details for the current kick.
+     - game.Workspace.Field.Field.LeftUprights: The target object for the kick, representing the left uprights of the football field.
+
+How It Works:
+-------------
+1. The client finalizes the kick by firing the Kick remote event, sending the necessary data (power, verticalAngle, accuracy, and kickSetup) to the server.
+2. The server listens for the Kick event, processes the data, and passes it to the KickModuleServer.
+3. The KickModuleServer executes the kick, using the power, angle, accuracy, and the target (left uprights) as inputs.

@@ -1,0 +1,64 @@
+KickModuleServer Documentation
+========================================
+
+This script manages the server-side logic for football kicking mechanics in Roblox. It initializes the kick setup, 
+processes the kick execution, and checks if the kick is successful.
+
+Dependencies and Services:
+--------------------------
+- serverScriptService: Accesses the ServerScriptService for server-side scripts and classes.
+- replicatedStorage: Accesses the ReplicatedStorage service for shared assets and remotes.
+- players: Fetches the Players service to interact with player objects.
+- classes: References the Classes folder in ServerScriptService, which contains the Football class.
+- Football: Loads the Football class, which handles the football object.
+- assets: Accesses the Assets folder in ReplicatedStorage for game assets.
+- remotes: References the Remotes folder in ReplicatedStorage for server-client communication.
+- kickAnimations: Loads the KickAnimations module for handling kick animations.
+
+Functions:
+----------
+
+1. kickModuleServer:InitializeKick
+   ---------------------------------------------------------
+   - Initializes the kick setup at a specific position and orientation based on the specified hash.
+   - Parameters:
+     - kickPosition: The position where the kick setup will be initialized.
+     - hash: A string indicating the kick position (Left, Right, or Middle).
+
+   - Clones the KickSetup asset from assets and parents it to Workspace.
+   - Depending on the hash value, it positions the kick setup accordingly:
+     - Left: Sets the position to the left of the specified kickPosition.
+     - Right: Sets the position to the right of the specified kickPosition.
+     - Middle: Sets the position at the center of the specified kickPosition.
+   
+   - Connects a Touched event to the KickerPad part. When a player touches the KickerPad:
+     - Checks if the PlayerUsing attribute is empty and if the touched object has a Humanoid.
+     - If true, retrieves the player object and sets the PlayerUsing attribute to the player's name.
+     - Fires the SteppedOnPad remote event to the client, indicating that the player is ready to kick.
+
+2. kickModuleServer:Kick
+   ---------------------------------------------------------
+   - Executes the kick with specified power, vertical angle, and accuracy.
+   - Parameters:
+     - power: The power value selected by the player for the kick.
+     - verticalAngle: The vertical angle at which the player kicks the ball.
+     - accuracy: The accuracy value selected by the player for the kick.
+     - kickSetup: The kick setup object containing the football.
+     - goalposts: The goalposts object used to check if the kick is successful.
+
+   - Creates a new Football object using the football from kickSetup.
+   - Plays the kick animation using the KickSnap function from kickAnimations.
+   - Waits for 2 seconds to allow the kick animation to finish.
+   
+   - Connects a Touched event to the IfGoodChecker part of the goalposts:
+     - If the touched object matches the kickSetup football, it indicates a successful kick.
+   
+   - Calls the Kick method on the football object with the specified power, vertical angle, and accuracy.
+
+How It Works:
+-------------
+1. When the game initializes a kick, the InitializeKick function is called with the kick position and orientation.
+2. The kick setup is created and positioned based on the provided hash (Left, Right, or Middle).
+3. When a player touches the KickerPad, the player is registered, and the kick preparation is communicated to the client.
+4. Once the player finalizes their kick, the Kick function is called with the selected parameters.
+5. The football is kicked with the specified power, angle, and accuracy, and a success check is performed against the goalposts.

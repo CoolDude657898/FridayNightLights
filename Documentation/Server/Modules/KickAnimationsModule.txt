@@ -1,0 +1,42 @@
+KickAnimationsModule Documentation
+=====================================
+
+This module manages the animations related to the football kicking action in Roblox. 
+It provides functionality for playing animations when the football is kicked.
+
+Dependencies and Services:
+--------------------------
+- tweenService: Accesses the TweenService to create smooth transitions for the football's position and orientation.
+
+Functions:
+----------
+
+1. KickAnimationsModule:KickSnap
+   ---------------------------------------------------------
+   - Plays the kick animation for the football, moving it and rotating it to simulate a kick action.
+   - Parameters:
+     - football: The football object that will be animated.
+     - startingPosition: The initial position of the football before the kick animation begins.
+
+   - Sets the football to be anchored, preventing it from falling due to gravity during the animation.
+   - Changes the football's orientation to simulate the angle of the kick (90 degrees on the Z-axis).
+   - Creates a rotation tween that continuously rotates the football around the Z-axis (360 degrees).
+     - The rotation duration is set to 0.4 seconds with a linear easing style.
+     - The rotation tween is set to play continuously after it completes.
+   
+   - Creates a movement tween that simulates the football moving backward when kicked.
+     - The movement duration is set to 0.5 seconds with a linear easing style, moving the football 15 studs backward and slightly downward.
+   
+   - Creates a holder rotation tween that resets the football's orientation to 0 degrees on the Z-axis after it has moved.
+     - The holder rotation duration is set to 0.3 seconds with a linear easing style.
+
+   - When the movement tween completes:
+     - The rotation tween is paused and destroyed to stop further rotation.
+     - The holder rotation tween is then played, resetting the football's orientation.
+
+How It Works:
+-------------
+1. The KickSnap function is called when the kick animation is triggered.
+2. The football is anchored and positioned for the animation.
+3. Two tweens (rotation and movement) are created to simulate the snapping action.
+4. Upon completion of the movement, the rotation is paused, and the holder rotation is activated to reset the football's orientation.

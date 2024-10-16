@@ -1,4 +1,4 @@
-KickClient Script Documentation
+KickClient Documentation
 ========================================
 
 This script handles user input for the football kicking mechanic. It processes the initiation of the kick, 
