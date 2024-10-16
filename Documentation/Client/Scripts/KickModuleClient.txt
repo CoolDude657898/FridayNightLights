@@ -1,4 +1,4 @@
-Kick Module Client Documentation
+KickModuleClient Documentation
 ================================
 
 This module handles the client-side logic for a football kicking mechanic in Roblox. It manages the GUI, power, accuracy, 
